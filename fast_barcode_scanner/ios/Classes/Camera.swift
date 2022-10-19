@@ -130,8 +130,10 @@ class Camera: NSObject {
 
     func start() throws {
         scanner.start()
-        session.startRunning()
-        isSessionRunning = session.isRunning
+        DispatchQueue.global(qos: .background).async {
+            session.startRunning()
+            isSessionRunning = session.isRunning
+        }
 
         if torchState {
             try toggleTorch()
@@ -140,8 +142,10 @@ class Camera: NSObject {
 
     func stop() {
         torchState = captureDevice.isTorchActive
-        session.stopRunning()
-        isSessionRunning = session.isRunning
+        DispatchQueue.global(qos: .background).async {
+            session.stopRunning()
+            isSessionRunning = session.isRunning
+        }
     }
 
     @discardableResult
